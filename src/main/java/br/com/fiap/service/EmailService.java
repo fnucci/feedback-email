@@ -18,18 +18,18 @@ public class EmailService {
     public void sendEmail(EmailDTO emailDTO) {
         try {
             SendEmailRequest sendEmailRequest = SendEmailRequest.builder()
-                    .destination(Destination.builder().toAddresses(emailDTO.getTo()).build())
+                    .destination(Destination.builder().toAddresses(emailDTO.getEmail()).build())
                     .message(Message.builder()
-                            .subject(Content.builder().data(emailDTO.getSubject()).build())
+                            .subject(Content.builder().data("Nota Baixa").build())
                             .body(Body.builder()
-                                    .text(Content.builder().data(emailDTO.getBody()).build())
+                                    .text(Content.builder().data(emailDTO.getMsg()).build())
                                     .build())
                             .build())
-                    .source("rafaelskiss1@hotmail.com") // Deve ser um e-mail verificado no SES
+                    .source("rafaelskiss1@hotmail.com")
                     .build();
 
             sesClient.sendEmail(sendEmailRequest);
-            LOG.infof("E-mail enviado com sucesso para: %s", emailDTO.getTo());
+            LOG.infof("E-mail enviado com sucesso para: %s", emailDTO.getEmail());
 
         } catch (Exception e) {
             LOG.error("Erro ao enviar e-mail via SES", e);

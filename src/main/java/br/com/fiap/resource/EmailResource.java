@@ -34,8 +34,8 @@ public class EmailResource implements RequestHandler<SQSEvent, String> {
             } catch (Exception e) {
                 LOG.errorf(e, "Erro ao processar mensagem SQS %s", msg.getMessageId());
                 throw new RuntimeException("Falha no processamento da mensagem", e);
-            } // ✅ Fecha try-catch
-        } // ✅ Fecha for
+            }
+        }
 
         return "OK";
     }

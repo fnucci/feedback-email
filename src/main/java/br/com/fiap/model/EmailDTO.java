@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @RegisterForReflection
 public class EmailDTO {
-    private String to;
-    private String subject;
-    private String body;
+    private String email;
+    private String msg;
 }
