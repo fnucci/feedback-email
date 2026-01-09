@@ -1,4 +1,4 @@
-name: Deploy AWS Lambda (Java)
+name: Deploy AWS Lambda (Java Quarkus)
 
 on:
   push:
@@ -18,17 +18,18 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+          cache: maven
 
       - name: Build with Maven
         run: mvn clean package -DskipTests
 
-      - name: Prepare Lambda ZIP
+      - name: Verify function.zip was created
         run: |
-          mkdir -p lambda/lib
-          cp target/*.jar lambda/
-          cp target/lambda/lib/*.jar lambda/lib/
-          cd lambda
-          zip -r function.zip .
+          if [ ! -f target/function.zip ]; then
+            echo "ERROR: target/function.zip not found!"
+            exit 1
+          fi
+          ls -lh target/function.zip
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -41,5 +42,16 @@ jobs:
         run: |
           aws lambda update-function-code \
             --function-name ${{ secrets.LAMBDA_FUNCTION_NAME }} \
-            --zip-file fileb://lambda/function.zip
+            --zip-file fileb://target/function.zip
 
+      - name: Wait for Lambda update to complete
+        run: |
+          aws lambda wait function-updated \
+            --function-name ${{ secrets.LAMBDA_FUNCTION_NAME }}
+
+      - name: Verify deployment
+        run: |
+          aws lambda get-function \
+            --function-name ${{ secrets.LAMBDA_FUNCTION_NAME }} \
+            --query 'Configuration.[FunctionName,LastModified,Runtime,Handler]' \
+            --output table
