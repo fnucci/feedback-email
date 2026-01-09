@@ -25,6 +25,8 @@ public class EmailResource implements RequestHandler<SQSEvent, String> {
     public String handleRequest(SQSEvent event, Context context) {
         LOG.info("Iniciando processamento de evento SQS");
 
+        LOG.info("SQS Event recebido com " + event.getRecords().get(0).getBody());
+
         for (SQSEvent.SQSMessage msg : event.getRecords()) {
             try {
                 LOG.infof("Processando mensagem: %s", msg.getMessageId());
