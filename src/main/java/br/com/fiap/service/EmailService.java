@@ -28,6 +28,7 @@ public class EmailService {
                     .source("rafaelskiss1@hotmail.com")
                     .build();
 
+            LOG.infof("Email request que foi enviada: %s", sendEmailRequest.toString());
             sesClient.sendEmail(sendEmailRequest);
             LOG.infof("E-mail enviado com sucesso para: %s", emailDTO.getEmail());
 
