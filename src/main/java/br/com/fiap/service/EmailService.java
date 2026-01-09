@@ -20,16 +20,16 @@ public class EmailService {
             // ✅ Monta mensagem personalizada com os dados
             String mensagemCompleta = String.format(
                     """
-                            Olá %s,
+                            Olá coordenador,
                             
-                            Identificamos que sua nota no curso "%s" está abaixo do esperado.
+                            Identificamos que o aluno %s deu uma nota baixa para o curso "%s"
                             
                             Nota obtida: %d
                             
-                            %s
+                            Comentário do aluno: %s
                             
                             Atenciosamente,
-                            Equipe Acadêmica
+                            Equipe Faculdade FIAP
                             """,
                     emailDTO.getAluno(),
                     emailDTO.getCurso(),
