@@ -38,38 +38,39 @@
 
     <dependencies>
 
-        <!-- Core CDI -->
+        <!-- Lambda Core -->
         <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-arc</artifactId>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-lambda-java-core</artifactId>
+            <version>1.2.3</version>
         </dependency>
 
-        <!-- AWS Lambda (Quarkus integration) -->
+        <!-- Lambda Events (SQSEvent) -->
         <dependency>
-            <groupId>io.quarkiverse.amazonservices</groupId>
-            <artifactId>quarkus-amazon-lambda</artifactId>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-lambda-java-events</artifactId>
+            <version>3.11.3</version>
         </dependency>
 
-        <!-- SQS -->
+        <!-- Jackson -->
         <dependency>
-            <groupId>io.quarkiverse.amazonservices</groupId>
-            <artifactId>quarkus-amazon-sqs</artifactId>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
         </dependency>
 
-        <!-- SES -->
+        <!-- AWS SDK v2 -->
         <dependency>
-            <groupId>io.quarkiverse.amazonservices</groupId>
-            <artifactId>quarkus-amazon-ses</artifactId>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>ses</artifactId>
         </dependency>
 
-        <!-- Tests -->
         <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-junit5</artifactId>
-            <scope>test</scope>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>sqs</artifactId>
         </dependency>
 
     </dependencies>
+
 
 
     <build>
