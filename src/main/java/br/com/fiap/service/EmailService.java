@@ -17,24 +17,50 @@ public class EmailService {
 
     public void sendEmail(EmailDTO emailDTO) {
         try {
+            // ✅ Monta mensagem personalizada com os dados
+            String mensagemCompleta = String.format(
+                    """
+                            Olá %s,
+                            
+                            Identificamos que sua nota no curso "%s" está abaixo do esperado.
+                            
+                            Nota obtida: %d
+                            
+                            %s
+                            
+                            Atenciosamente,
+                            Equipe Acadêmica
+                            """,
+                    emailDTO.getAluno(),
+                    emailDTO.getCurso(),
+                    emailDTO.getNota(),
+                    emailDTO.getMsg()
+            );
+
             SendEmailRequest sendEmailRequest = SendEmailRequest.builder()
-                    .destination(Destination.builder().toAddresses(emailDTO.getEmail()).build())
+                    .destination(Destination.builder()
+                            .toAddresses(emailDTO.getEmail())
+                            .build())
                     .message(Message.builder()
-                            .subject(Content.builder().data("Nota Baixa").build())
+                            .subject(Content.builder()
+                                    .data(String.format("Alerta: Nota Baixa no Curso %s", emailDTO.getCurso()))
+                                    .build())
                             .body(Body.builder()
-                                    .text(Content.builder().data(emailDTO.getMsg()).build())
+                                    .text(Content.builder()
+                                            .data(mensagemCompleta)
+                                            .build())
                                     .build())
                             .build())
                     .source("rafaelskiss1@hotmail.com")
                     .build();
 
-            LOG.infof("Email request que foi enviada: %s", sendEmailRequest.toString());
             sesClient.sendEmail(sendEmailRequest);
-            LOG.infof("E-mail enviado com sucesso para: %s", emailDTO.getEmail());
+            LOG.infof("E-mail enviado com sucesso para: %s (Aluno: %s, Curso: %s, Nota: %d)",
+                    emailDTO.getEmail(), emailDTO.getAluno(), emailDTO.getCurso(), emailDTO.getNota());
 
         } catch (Exception e) {
-            LOG.error("Erro ao enviar e-mail via SES", e);
-            throw e;
+            LOG.errorf(e, "Erro ao enviar e-mail para: %s", emailDTO.getEmail());
+            throw new RuntimeException("Falha ao enviar e-mail", e);
         }
     }
 }

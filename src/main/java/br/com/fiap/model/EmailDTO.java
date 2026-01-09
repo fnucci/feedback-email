@@ -12,6 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @RegisterForReflection
 public class EmailDTO {
-    private String email;
+    private String aluno;
+    private String curso;
+    private Short nota;
     private String msg;
+    private String email;
 }
